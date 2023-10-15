@@ -13,11 +13,14 @@ Write-Host "Version: $version"
 # Get the script location
 $scriptLocation = Split-Path -Parent $MyInvocation.MyCommand.Path
 
+# Set the artifacts path
+$artifactPath = Join-Path -Path $scriptLocation -ChildPath "artifacts"
+
 # Set the project path
 $projectPath = Join-Path -Path $scriptLocation -ChildPath "Src/Frank.TorrentClient"
 
 # Set the output path
-$outputPath = Join-Path -Path $scriptLocation -ChildPath "Build/$($configuration)/$($framework)"
+$outputPath = Join-Path -Path $artifactPath -ChildPath "$($configuration)/$($framework)"
 
 # Change to the project directory
 Set-Location $projectPath
@@ -26,7 +29,7 @@ Set-Location $projectPath
 dotnet restore --verbosity quiet
 
 # Set the version
-dotnet build /p:Version=$version --no-restore --verbosity quiet
+dotnet build /p:Version=$version --configuration $configuration --no-restore --verbosity quiet
 
 # Publish the project
 dotnet publish --configuration $configuration --framework $framework --output $outputPath --no-build --verbosity quiet
@@ -38,4 +41,10 @@ if ($configuration -ne "Release") {
 }
 
 # Create the NuGet package
-dotnet pack --configuration $configuration --output $outputPath /p:PackageVersion=$version --version-suffix $packageVersionSuffix --no-build --verbosity quiet
+dotnet pack --configuration $configuration --output $artifactPath --force /p:PackageVersion=$version --version-suffix $packageVersionSuffix --no-build --verbosity quiet
+
+# Clean up the project
+dotnet clean --configuration $configuration --no-build --verbosity quiet
+
+# Change to the script directory
+Set-Location $scriptLocation

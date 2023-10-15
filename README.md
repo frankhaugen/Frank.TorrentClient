@@ -4,8 +4,7 @@ This is an implementation of a torrent peer using the BitTorrent Protocol 1.0 wr
 
 ## Using the TorrentClient
 
- 1. Download the source code.
- 2. Include project TorrentClient.
+ 1. Install the Nuget
  3. Use the following code:
 
 ```csharp
