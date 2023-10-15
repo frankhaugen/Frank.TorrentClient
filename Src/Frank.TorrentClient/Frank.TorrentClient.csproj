@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Authors>Frank R. Haugen, Aljaz Simonic</Authors>
+        <Description>Torrent client that is simple to use and behave as you expect. This is a fork</Description>
+        <Copyright>Frank R. Haugen (Aljaz Simonic, originally)</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/frankhaugen/Frank.TorrentClient/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/frankhaugen/Frank.TorrentClient.git</RepositoryUrl>
+        <RepositoryType>GIT</RepositoryType>
+        <PackageTags>Torrent, BitTorrent</PackageTags>
+        <NeutralLanguage>en</NeutralLanguage>
+        <IsPackable>true</IsPackable>
+        
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Extensions\LinqExtenstions.cs"/>
+        <Compile Remove="Extensions\ParsingExtensions.cs"/>
+        <Compile Remove="Extensions\ReflectionExtensions.cs"/>
+        <Compile Remove="Extensions\SerializationExtensions.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DefensiveProgrammingFramework" Version="1.0.6"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    </ItemGroup>
+
+</Project>
