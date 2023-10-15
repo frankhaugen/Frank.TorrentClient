@@ -38,4 +38,4 @@ if ($configuration -ne "Release") {
 }
 
 # Create the NuGet package
-dotnet pack --configuration $configuration --output $outputPath --version-suffix $packageVersionSuffix --no-build --verbosity quiet
+dotnet pack --configuration $configuration --output $outputPath /p:PackageVersion=$version --version-suffix $packageVersionSuffix --no-build --verbosity quiet
