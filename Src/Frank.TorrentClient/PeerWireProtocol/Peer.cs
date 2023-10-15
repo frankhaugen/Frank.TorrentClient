@@ -686,13 +686,13 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(CancelMessage message)
+    private void ProcessRecievedMessage(CancelMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message.PieceIndex >= 0 &&
+            if (message!.PieceIndex >= 0 &&
                 message.PieceIndex < this.pieceManager.PieceCount &&
                 message.BlockOffset >= 0 &&
                 message.BlockOffset < this.pieceManager.PieceLength &&
@@ -715,13 +715,13 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(PieceMessage message)
+    private void ProcessRecievedMessage(PieceMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message.PieceIndex >= 0 &&
+            if (message!.PieceIndex >= 0 &&
                 message.PieceIndex < this.pieceManager.PieceCount &&
                 message.BlockOffset >= 0 &&
                 message.BlockOffset < this.pieceManager.PieceLength &&
@@ -743,13 +743,13 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(RequestMessage message)
+    private void ProcessRecievedMessage(RequestMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message.PieceIndex >= 0 &&
+            if (message!.PieceIndex >= 0 &&
                 message.PieceIndex < this.pieceManager.BlockCount &&
                 message.BlockOffset >= 0 &&
                 message.BlockOffset < this.pieceManager.GetBlockCount(message.PieceIndex) &&
@@ -772,13 +772,13 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(BitFieldMessage message)
+    private void ProcessRecievedMessage(BitFieldMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message.BitField.Length >= this.pieceManager.BlockCount)
+            if (message!.BitField.Length >= this.pieceManager.BlockCount)
             {
                 for (var i = 0; i < this.BitField.Length; i++) this.BitField[i] = message.BitField[i];
 
@@ -802,12 +802,12 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(ChokeMessage message)
+    private void ProcessRecievedMessage(ChokeMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
-            this.EnqueueDownloadMessage(message);
+            this.EnqueueDownloadMessage(message!);
         else
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
@@ -817,12 +817,12 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(UnchokeMessage message)
+    private void ProcessRecievedMessage(UnchokeMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
-            this.EnqueueDownloadMessage(message);
+            this.EnqueueDownloadMessage(message!);
         else
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
@@ -832,12 +832,12 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(InterestedMessage message)
+    private void ProcessRecievedMessage(InterestedMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
-            this.EnqueueDownloadMessage(message);
+            this.EnqueueDownloadMessage(message!);
         else
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
@@ -847,12 +847,12 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(UninterestedMessage message)
+    private void ProcessRecievedMessage(UninterestedMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
-            this.EnqueueUploadMessage(message);
+            this.EnqueueUploadMessage(message!);
         else
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
@@ -862,13 +862,13 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(HaveMessage message)
+    private void ProcessRecievedMessage(HaveMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message.PieceIndex >= 0 &&
+            if (message!.PieceIndex >= 0 &&
                 message.PieceIndex < this.pieceManager.PieceCount)
             {
                 this.BitField[message.PieceIndex] = true;
@@ -893,14 +893,14 @@ public sealed class Peer : IDisposable
     ///     Processes the received message.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void ProcessRecievedMessage(HandshakeMessage message)
+    private void ProcessRecievedMessage(HandshakeMessage? message)
     {
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.None ||
             this.HandshakeState == HandshakeState.SentButNotReceived)
         {
-            if (message.InfoHash == this.pieceManager.TorrentInfoHash &&
+            if (message!.InfoHash == this.pieceManager.TorrentInfoHash &&
                 message.ProtocolString == HandshakeMessage.ProtocolName &&
                 message.PeerId.IsNotNullOrEmpty() &&
                 message.PeerId != this.localPeerId)

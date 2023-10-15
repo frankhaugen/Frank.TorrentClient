@@ -473,7 +473,7 @@ namespace Frank.TorrentClient.BEncoding
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <param name="strictDecoding">if set to <c>true</c> [strict decoding].</param>
-        /// <exception cref="Frank.TorrentClient.BEncoding.BEncodingException">
+        /// <exception cref="BEncodingException">
         /// Invalid data found. Aborting
         /// or
         /// or

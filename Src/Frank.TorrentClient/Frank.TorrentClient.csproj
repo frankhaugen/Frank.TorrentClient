@@ -16,6 +16,11 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591;1574;8600;8625;8604;8602;8618;8603;8622;8601;1658;1584;1570;8765;8767</NoWarn>
+
+        
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,7 +32,6 @@
 
     <ItemGroup>
         <PackageReference Include="DefensiveProgrammingFramework" Version="1.0.6"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
     </ItemGroup>
 
 </Project>
