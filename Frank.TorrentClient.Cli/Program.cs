@@ -1,11 +1,7 @@
-using System;
 using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Frank.TorrentClient;
 using Frank.TorrentClient.TorrentEventArgs;
+
+namespace Frank.TorrentClient.Cli;
 
 internal class Program
 {
