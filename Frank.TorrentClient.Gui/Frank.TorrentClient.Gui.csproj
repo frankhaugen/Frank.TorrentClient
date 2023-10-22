@@ -22,12 +22,7 @@
 
 
     <ItemGroup>
+        <ProjectReference Include="..\Frank.TorrentClient.Search\Frank.TorrentClient.Search.csproj" />
         <ProjectReference Include="..\Frank.TorrentClient\Frank.TorrentClient.csproj"/>
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <Folder Include="Components\About\"/>
-        <Folder Include="Components\Dowloads\"/>
     </ItemGroup>
 </Project>

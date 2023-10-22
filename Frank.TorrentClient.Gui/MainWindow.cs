@@ -1,14 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 
-using Frank.TorrentClient.Gui.Components.Search;
 using Frank.TorrentClient.Gui.Pages;
+using Frank.TorrentClient.Search;
 
 namespace Frank.TorrentClient.Gui;
 
 public class MainWindow : Window
 {
-    private ISearchProvider<Person> _searchProvider;
+    private ISearchProvider<Torrent> _searchProvider;
     private TabControl _tabControl;
 
     public MainWindow()
@@ -16,14 +16,14 @@ public class MainWindow : Window
         SetupWindow();
 
         // Create an instance of your search provider
-        _searchProvider = new DummySearchProvider();
+        _searchProvider = new TorrentSearchProvider();
 
         // Create TabControl and assign it to the window content
         _tabControl = new TabControl();
         Content = _tabControl;
 
         // Define the tabs
-        TabItem searchTab = new() { Header = "Search", Content = new SearchPage(_searchProvider) };
+        TabItem searchTab = new() { Header = "Search", Content = new SearchPage<Torrent>(_searchProvider) };
         TabItem downloadsTab = new()
         {
             Header = "Downloads", Content = new TextBlock { Text = "Downloads content goes here" }
