@@ -28,7 +28,7 @@ public class SearchBox : UserControl
         _searchButton.Click += (sender, e) => Search();
 
         // Arrange these controls in a horizontal line using a StackPanel with Horizontal orientation
-        StackPanel? panel = new StackPanel { Orientation = Orientation.Horizontal };
+        StackPanel? panel = new() { Orientation = Orientation.Horizontal };
         panel.Children.Add(_searchField);
         panel.Children.Add(_searchButton);
 

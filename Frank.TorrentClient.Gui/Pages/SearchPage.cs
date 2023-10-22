@@ -19,7 +19,7 @@ public class SearchPage : UserControl
         _searchBox = new SearchBox(query => Search(query));
         _searchResults = new SearchResults<Person>();
 
-        StackPanel panel = new StackPanel { Orientation = Orientation.Vertical };
+        StackPanel panel = new() { Orientation = Orientation.Vertical };
         panel.Children.Add(_searchBox);
         panel.Children.Add(_searchResults);
 

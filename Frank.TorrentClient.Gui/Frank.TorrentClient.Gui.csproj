@@ -27,7 +27,7 @@
 
 
     <ItemGroup>
-        <Folder Include="Pages\About\"/>
-        <Folder Include="Pages\Dowloads\"/>
+        <Folder Include="Components\About\"/>
+        <Folder Include="Components\Dowloads\"/>
     </ItemGroup>
 </Project>

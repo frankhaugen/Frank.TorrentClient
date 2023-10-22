@@ -23,13 +23,12 @@ public class MainWindow : Window
         Content = _tabControl;
 
         // Define the tabs
-        TabItem searchTab = new TabItem { Header = "Search", Content = new SearchPage(_searchProvider) };
-        TabItem downloadsTab = new TabItem
+        TabItem searchTab = new() { Header = "Search", Content = new SearchPage(_searchProvider) };
+        TabItem downloadsTab = new()
         {
             Header = "Downloads", Content = new TextBlock { Text = "Downloads content goes here" }
         };
-        TabItem aboutTab =
-            new TabItem { Header = "About", Content = new TextBlock { Text = "About content goes here" } };
+        TabItem aboutTab = new() { Header = "About", Content = new TextBlock { Text = "About content goes here" } };
 
         // Add tabs to the TabControl
         _tabControl.Items.Add(searchTab);
