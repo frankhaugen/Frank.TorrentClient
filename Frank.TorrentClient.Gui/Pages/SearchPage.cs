@@ -1,8 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Layout;
 
-using Frank.TorrentClient.Gui.Pages.Search;
-using Frank.TorrentClient.Gui.Pages.Search.UserControls;
+using Frank.TorrentClient.Gui.Components.Search;
+using Frank.TorrentClient.Gui.UserControls;
 
 namespace Frank.TorrentClient.Gui.Pages;
 

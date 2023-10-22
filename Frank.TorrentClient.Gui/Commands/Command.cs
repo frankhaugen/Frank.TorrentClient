@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Frank.TorrentClient.Gui;
+namespace Frank.TorrentClient.Gui.Commands;
 
 public class Command : ICommand
 {

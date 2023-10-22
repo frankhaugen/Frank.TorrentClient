@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Frank.TorrentClient.Gui.Pages.Search;
+namespace Frank.TorrentClient.Gui.Components.Search;
 
 public class SearchResultItem<T>
 {

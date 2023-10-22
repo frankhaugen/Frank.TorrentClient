@@ -1,4 +1,6 @@
-﻿namespace Frank.TorrentClient.Gui.Pages.Search;
+﻿using Frank.TorrentClient.Gui.Commands;
+
+namespace Frank.TorrentClient.Gui.Components.Search;
 
 public class DummySearchProvider : ISearchProvider<Person>
 {
@@ -41,6 +43,6 @@ public class DummySearchProvider : ISearchProvider<Person>
             });
         }
 
-        return results ?? Enumerable.Empty<SearchResultItem<Person>>();
+        return await Task.FromResult(results);
     }
 }

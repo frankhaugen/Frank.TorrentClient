@@ -1,4 +1,4 @@
-﻿namespace Frank.TorrentClient.Gui.Pages.Search;
+﻿namespace Frank.TorrentClient.Gui.Components.Search;
 
 public interface ISearchProvider<T>
 {

@@ -2,7 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
-namespace Frank.TorrentClient.Gui.Pages.Search.UserControls;
+using Frank.TorrentClient.Gui.Components.Search;
+
+namespace Frank.TorrentClient.Gui.UserControls;
 
 public class SearchResults<T> : UserControl
 {

@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace Frank.TorrentClient.Gui.Pages.Search.UserControls;
+namespace Frank.TorrentClient.Gui.UserControls;
 
 public class SearchBox : UserControl
 {
