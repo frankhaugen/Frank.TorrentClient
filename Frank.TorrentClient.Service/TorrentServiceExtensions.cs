@@ -1,4 +1,4 @@
-﻿using Frank.TorrentClient.Service.Storage;
+﻿using Frank.TorrentClient.Search;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +11,9 @@ public static class TorrentServiceExtensions
     {
         services.Configure<TorrentsConfiguration>(configuration.GetSection(nameof(TorrentsConfiguration)));
         
-        services.AddSingleton<IDataStorage<TorrentFile>, DataStorage<TorrentFile>>();
-        services.AddSingleton<ITorrentStorageService, TorrentStorageService>();
-        
+        services.AddSingleton<ISearchProvider<TorrentSearchResult>, TorrentSearchProvider>();
+        services.AddSingleton<ITorrentSearchService, TorrentSearchService>();
+        services.AddSingleton<ITorrentsDownloadService, TorrentsDownloadService>();
         services.AddSingleton<ITorrentService, TorrentService>();
 
         return services;

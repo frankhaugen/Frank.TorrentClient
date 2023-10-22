@@ -11,7 +11,7 @@ namespace Frank.TorrentClient.Gui;
 
 public class TorrentViewItem : UserControl
 {
-    public TorrentViewItem(Torrent torrent) =>
+    public TorrentViewItem(TorrentSearchResult torrent) =>
         Content = new StackPanel()
         {
             Orientation = Orientation.Horizontal,

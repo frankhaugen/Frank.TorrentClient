@@ -16,7 +16,7 @@ public class MainWindow : Window
     {
         // Initialize dependencies
         var searchProvider = new TorrentSearchProvider();
-        var dataTemplate = new FuncDataTemplate<Torrent>((x, y) => new TorrentViewItem(x));
+        var dataTemplate = new FuncDataTemplate<TorrentSearchResult>((x, y) => new TorrentViewItem(x));
         var fileSystemWatcherEx = new FileSystemWatcherEx(ConfigurationReader.GetTorrentDirectories().WatchDirectory)
         {
             NotifyFilter = NotifyFilters.FileName | NotifyFilters.CreationTime

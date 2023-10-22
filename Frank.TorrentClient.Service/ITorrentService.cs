@@ -1,5 +1,13 @@
-﻿namespace Frank.TorrentClient.Service;
+﻿using System.Collections.ObjectModel;
 
-public interface ITorrentService : IDisposable
+using Frank.TorrentClient.Search;
+
+namespace Frank.TorrentClient.Service;
+
+public interface ITorrentService
 {
+    Task<IEnumerable<TorrentSearchResult>> SearchAsync(string query);
+    void SelectResultToDownload(TorrentSearchResult torrent);
+    
+    ObservableCollection<TorrentProgressInfo> Torrents { get; }
 }

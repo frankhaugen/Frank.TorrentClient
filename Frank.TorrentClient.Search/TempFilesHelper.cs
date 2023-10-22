@@ -1,4 +1,6 @@
-﻿namespace Frank.TorrentClient.Search;
+﻿using bzTorrent.Data;
+
+namespace Frank.TorrentClient.Search;
 
 public static class TempFilesHelper
 {

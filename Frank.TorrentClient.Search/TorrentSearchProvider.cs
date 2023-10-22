@@ -1,22 +1,15 @@
 ﻿namespace Frank.TorrentClient.Search;
 
-public class TorrentSearchProvider : ISearchProvider<Torrent>
+public class TorrentSearchProvider : ISearchProvider<TorrentSearchResult>
 {
     private readonly TorrentSearcher _searcher;
     
-    public TorrentSearchProvider()
-    {
-        _searcher = new TorrentSearcher(new EztvScraper());
-    }
-    
-    public async Task<IEnumerable<Torrent>> GetSearchResults(string query)
-    {
-        var torrents = _searcher.Search(query);
-        
-        return await Task.FromResult(torrents.Select(torrent => new Torrent
+    public TorrentSearchProvider() => _searcher = new TorrentSearcher(new EztvScraper());
+
+    public async Task<IEnumerable<TorrentSearchResult>> GetSearchResults(string query) =>
+        await Task.FromResult(_searcher.Search(query).Select(torrent => new TorrentSearchResult
         {
             Uri = torrent,
             Name = torrent.Segments.Last(),
         }));
-    }
 }

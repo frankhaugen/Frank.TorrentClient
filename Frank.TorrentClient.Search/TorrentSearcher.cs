@@ -1,6 +1,6 @@
 ﻿namespace Frank.TorrentClient.Search;
 
-internal class TorrentSearcher
+internal class TorrentSearcher : ITorrentSearcher
 {
     private readonly IEnumerable<IScraper> _scrapers;
 

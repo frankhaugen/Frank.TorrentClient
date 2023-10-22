@@ -1,14 +1,14 @@
 ﻿namespace Frank.TorrentClient.Search;
 
-public class Torrent
+public class TorrentSearchResult
 {
-    public Torrent(Uri uri)
+    public TorrentSearchResult(Uri uri)
     {
         Name = uri.Segments.Last();
         Uri = uri;
     }
     
-    public Torrent()
+    public TorrentSearchResult()
     {
     }
 

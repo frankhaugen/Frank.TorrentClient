@@ -11,10 +11,10 @@ namespace Frank.TorrentClient.Gui.UserControls;
 
 public class SearchControl : StackPanel
 {
-    private readonly SearchResults<Torrent> _searchResults = new();
-    private readonly ISearchProvider<Torrent> _searchProvider;
+    private readonly SearchResults<TorrentSearchResult> _searchResults = new();
+    private readonly ISearchProvider<TorrentSearchResult> _searchProvider;
 
-    public SearchControl(ISearchProvider<Torrent> searchProvider, IDataTemplate dataTemplate)
+    public SearchControl(ISearchProvider<TorrentSearchResult> searchProvider, IDataTemplate dataTemplate)
     {
         _searchProvider = searchProvider;
         _searchResults.Items.ItemTemplate = dataTemplate;
@@ -31,9 +31,9 @@ public class SearchControl : StackPanel
     {
         _searchResults.Data.Clear();
 
-        IEnumerable<Torrent> results = await _searchProvider.GetSearchResults(query);
+        IEnumerable<TorrentSearchResult> results = await _searchProvider.GetSearchResults(query);
 
-        foreach (Torrent result in results)
+        foreach (TorrentSearchResult result in results)
         {
             _searchResults.Data.Add(result);
         }

@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Frank.TorrentClient\Frank.TorrentClient.csproj" />
+        <ProjectReference Include="..\Frank.TorrentClient.Service\Frank.TorrentClient.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>

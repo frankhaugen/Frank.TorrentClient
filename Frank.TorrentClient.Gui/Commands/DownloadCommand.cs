@@ -2,9 +2,9 @@
 
 namespace Frank.TorrentClient.Gui.Commands;
 
-public class DownloadCommand : GenericBaseCommand<Torrent>
+public class DownloadCommand : GenericBaseCommand<TorrentSearchResult>
 {
-    public DownloadCommand(Action<Torrent> action) : base(action)
+    public DownloadCommand(Action<TorrentSearchResult> action) : base(action)
     {
     }
 }

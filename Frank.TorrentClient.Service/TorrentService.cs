@@ -1,61 +1,40 @@
-﻿using FileWatcherEx;
+﻿using System.Collections.ObjectModel;
 
-using Frank.TorrentClient.Service.Storage;
-
-using Microsoft.Extensions.Options;
+using Frank.TorrentClient.Search;
 
 namespace Frank.TorrentClient.Service;
 
 public class TorrentService : ITorrentService
 {
-    private readonly IOptions<TorrentsConfiguration> _options;
-    private readonly TorrentClient _torrentClient;
-    private readonly IFileSystemWatcherWrapper _fileSystemWatcher;
-    private readonly ITorrentStorageService _storageService;
-
-    public TorrentService(IOptions<TorrentsConfiguration> options, ITorrentStorageService storageService)
+    private readonly ITorrentSearchService _searchService;
+    private readonly ITorrentsDownloadService _downloadService;
+    
+    public TorrentService(ITorrentSearchService searchService, ITorrentsDownloadService downloadService)
     {
-        _options = options;
-        _storageService = storageService;
-
-        var fileSystemWatcher = new FileSystemWatcherWrapper()
+        _searchService = searchService;
+        _downloadService = downloadService;
+        
+        _downloadService.TorrentProgressChanged += (sender, infos) =>
         {
-            Path = _options.Value.TorrentsDirectory,
-            NotifyFilter = NotifyFilters.FileName | NotifyFilters.CreationTime,
-            EnableRaisingEvents = true,
-            IncludeSubdirectories = false,
-            Filters = { "*.torrent" }
+            Torrents.Clear();
+            foreach (TorrentProgressInfo progressInfo in infos)
+            {
+                Torrents.Add(progressInfo);
+            }
         };
-        
-        fileSystemWatcher.Created += FileSystemWatcherOnCreated;
-        
-        _fileSystemWatcher = fileSystemWatcher;
-        
-        _torrentClient = new TorrentClient(_options.Value.Port, _options.Value.TorrentsDirectory);
-        _torrentClient.Start();
-    }
-
-    private void FileSystemWatcherOnCreated(object sender, FileSystemEventArgs e)
-    {
-        
     }
     
-    public void FindTorrents()
+    public ObservableCollection<TorrentProgressInfo> Torrents { get; } = new();
+    
+    public async Task<IEnumerable<TorrentSearchResult>> SearchAsync(string query)
     {
-        var torrents = _storageService.GetTorrentFiles();
-        
-        
-        
-        foreach (var torrent in torrents)
-        {
-            _storageService.Save(torrent);
-        }
+        return await _searchService.SearchAsync(query);
+    }
+    
+    public void SelectResultToDownload(TorrentSearchResult torrent)
+    {
+        var torrentFile = _searchService.SelectResult(torrent);
+        _downloadService.StartDownload(torrentFile);
     }
 
-
-    public void Dispose()
-    {
-        _fileSystemWatcher.Dispose();
-        _torrentClient.Dispose();
-    }
 }

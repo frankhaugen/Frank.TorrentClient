@@ -8,10 +8,10 @@ namespace Frank.TorrentClient.Gui.Pages;
 
 public class SearchPage : UserControl
 {
-    private readonly ISearchProvider<Torrent> _searchProvider;
+    private readonly ISearchProvider<TorrentSearchResult> _searchProvider;
     private SearchControl _searchControl;
 
-    public SearchPage(ISearchProvider<Torrent> searchProvider, IDataTemplate dataTemplate)
+    public SearchPage(ISearchProvider<TorrentSearchResult> searchProvider, IDataTemplate dataTemplate)
     {
         _searchProvider = searchProvider;
         _searchControl = new SearchControl(_searchProvider, dataTemplate);
