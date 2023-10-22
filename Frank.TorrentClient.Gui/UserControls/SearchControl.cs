@@ -1,51 +1,41 @@
-﻿using Avalonia.Controls;
+﻿using System.Diagnostics;
+
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 
+using Frank.TorrentClient.Gui.Pages;
 using Frank.TorrentClient.Search;
 
 namespace Frank.TorrentClient.Gui.UserControls;
 
-public class SearchControl<T> : StackPanel
+public class SearchControl : StackPanel
 {
-    private SearchBox _searchBox;
-    private SearchResults<T> _searchResults;
-    private readonly ISearchProvider<T> _searchProvider;
+    private readonly SearchResults<Torrent> _searchResults = new();
+    private readonly ISearchProvider<Torrent> _searchProvider;
 
-    public SearchControl(ISearchProvider<T> searchProvider)
+    public SearchControl(ISearchProvider<Torrent> searchProvider, IDataTemplate dataTemplate)
     {
         _searchProvider = searchProvider;
+        _searchResults.Items.ItemTemplate = dataTemplate;
 
-        // Initialize the search box with a custom search handler 
-        _searchBox = new SearchBox(async query => await SearchAsync(query));
+        Orientation = Orientation.Vertical;
 
-        // Initialize the search results grid
-        _searchResults = new SearchResults<T>();
+        SearchBox searchBox = new(async query => await SearchAsync(query));
 
-        // Define orientation
-        this.Orientation = Orientation.Vertical;
-
-        // Add both controls to the StackPanel
-        this.Children.Add(_searchBox);
-        this.Children.Add(_searchResults);
+        Children.Add(searchBox);
+        Children.Add(_searchResults);
     }
 
     private async Task SearchAsync(string query)
     {
-        // Clear the previous results
-        _searchResults.ClearResults();
+        _searchResults.Data.Clear();
 
-        // Fetch new results and add them to the grid
-        var results = await _searchProvider.GetSearchResults(query);
-        foreach (var result in results)
+        IEnumerable<Torrent> results = await _searchProvider.GetSearchResults(query);
+
+        foreach (Torrent result in results)
         {
-            try
-            {
-                _searchResults.AddResult(result);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            _searchResults.Data.Add(result);
         }
     }
 }

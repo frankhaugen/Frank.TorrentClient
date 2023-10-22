@@ -17,7 +17,6 @@ public class TorrentSearchProvider : ISearchProvider<Torrent>
         {
             Uri = torrent,
             Name = torrent.Segments.Last(),
-            Description = torrent.Segments.Last()
         }));
     }
 }

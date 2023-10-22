@@ -1,40 +1,24 @@
 ﻿using Avalonia.Controls;
 
 using System.Collections.ObjectModel;
-using System.Reflection;
+
+using Avalonia.Layout;
+
 
 namespace Frank.TorrentClient.Gui.UserControls;
 
-public class SearchResults<T> : DataGrid
+public class SearchResults<T> : UserControl
 {
-    private ObservableCollection<T> _items;
-
     public SearchResults()
     {
-        _items = new ObservableCollection<T>();
-        this.ItemsSource = _items;
-
-        // Using reflection to generate the columns based on the public properties of T
-        foreach (PropertyInfo property in typeof(T).GetProperties())
-        {
-            var column = new DataGridTextColumn
-            {
-                Header = property.Name,
-                Binding = new Avalonia.Data.Binding(property.Name)
-            };
-            this.Columns.Add(column);
-        }
-    }
-        
-    // Method to add an item
-    public void AddResult(T result)
-    {
-        _items.Add(result);
+        Items.VerticalAlignment = VerticalAlignment.Stretch;
+        Items.HorizontalAlignment = HorizontalAlignment.Stretch;
+        Items.ItemsSource = Data;
+        Items.DataContext = Data;
+        Content = Items;
     }
 
-    // Method to clear the items
-    public void ClearResults()
-    {
-        _items.Clear();
-    }
+    public ObservableCollection<T> Data { get; } = new();
+
+    public ListBox Items { get; } = new();
 }

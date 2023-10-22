@@ -1,6 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 
+using FileWatcherEx;
+
+using Frank.TorrentClient.Gui.Configuration;
 using Frank.TorrentClient.Gui.Pages;
 using Frank.TorrentClient.Search;
 
@@ -8,42 +12,47 @@ namespace Frank.TorrentClient.Gui;
 
 public class MainWindow : Window
 {
-    private ISearchProvider<Torrent> _searchProvider;
-    private TabControl _tabControl;
-
     public MainWindow()
     {
-        SetupWindow();
-
-        // Create an instance of your search provider
-        _searchProvider = new TorrentSearchProvider();
-
-        // Create TabControl and assign it to the window content
-        _tabControl = new TabControl();
-        Content = _tabControl;
-
-        // Define the tabs
-        TabItem searchTab = new() { Header = "Search", Content = new SearchPage<Torrent>(_searchProvider) };
-        TabItem downloadsTab = new()
+        // Initialize dependencies
+        var searchProvider = new TorrentSearchProvider();
+        var dataTemplate = new FuncDataTemplate<Torrent>((x, y) => new TorrentViewItem(x));
+        var fileSystemWatcherEx = new FileSystemWatcherEx(ConfigurationReader.GetTorrentDirectories().WatchDirectory)
         {
-            Header = "Downloads", Content = new TextBlock { Text = "Downloads content goes here" }
+            NotifyFilter = NotifyFilters.FileName | NotifyFilters.CreationTime
         };
-        TabItem aboutTab = new() { Header = "About", Content = new TextBlock { Text = "About content goes here" } };
 
-        // Add tabs to the TabControl
-        _tabControl.Items.Add(searchTab);
-        _tabControl.Items.Add(downloadsTab);
-        _tabControl.Items.Add(aboutTab);
+        // Initialize tabs
+        TabItem searchTab = new() { Header = "Search", Content = new SearchPage(searchProvider, dataTemplate) };
+        TabItem downloadsTab = new() { Header = "Downloads", Content = new DownloadPage(fileSystemWatcherEx) };
+        TabItem aboutTab = new() { Header = "About", Content = new AboutPage() };
+        
+        // Initialize tab control
+        TabControl tabControl = new();
+        tabControl.Items.Add(searchTab);
+        tabControl.Items.Add(downloadsTab);
+        tabControl.Items.Add(aboutTab);
 
+        // Initialize Content
+        Content = tabControl;
         this.AttachDevTools();
     }
-
-    private void SetupWindow()
+    
+    protected override void OnInitialized()
     {
-        // Set the Window's properties
+        TempFilesHelper.Initialize();
+
         Title = "Torrent App";
         Width = 800;
         Height = 600;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+        base.OnInitialized();
+    }
+
+    protected override void OnClosing(WindowClosingEventArgs e)
+    {
+        TempFilesHelper.Dispose();
+        base.OnClosing(e);
     }
 }

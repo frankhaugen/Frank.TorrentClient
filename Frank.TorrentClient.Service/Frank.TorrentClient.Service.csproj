@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.TorrentClient.Search\Frank.TorrentClient.Search.csproj" />
+      <ProjectReference Include="..\Frank.TorrentClient\Frank.TorrentClient.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+        <PackageReference Include="FileWatcherEx" Version="2.5.0"/>
+        
+    </ItemGroup>
+
+</Project>

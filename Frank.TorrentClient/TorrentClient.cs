@@ -462,7 +462,7 @@ public sealed class TorrentClient : IDisposable
     private void Listen()
     {
         var timeout = (int)TimeSpan.FromSeconds(5).TotalMilliseconds;
-        var bufferSize = 1024 * 1024;
+        var bufferSize = 1024 * 1024; // 1MB
         int bytesRead;
         var offset = 0;
         var buffer = new byte[bufferSize];

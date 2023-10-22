@@ -17,12 +17,19 @@
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.2"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2"/>
+        <PackageReference Include="ConcurrentObservableCollections" Version="1.1.9"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
     </ItemGroup>
 
 
     <ItemGroup>
-        <ProjectReference Include="..\Frank.TorrentClient.Search\Frank.TorrentClient.Search.csproj" />
-        <ProjectReference Include="..\Frank.TorrentClient\Frank.TorrentClient.csproj"/>
+        <ProjectReference Include="..\Frank.TorrentClient.Service\Frank.TorrentClient.Service.csproj"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 </Project>
