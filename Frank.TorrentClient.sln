@@ -9,6 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frank.TorrentClient.Cli", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frank.TorrentClient.Tests", "Frank.TorrentClient.Tests\Frank.TorrentClient.Tests.csproj", "{101D0A7B-E481-4338-86B1-056A79C5AF76}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0E88F328-FE39-4E67-958F-6B015D22F4B9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		cleanup.ps1 = cleanup.ps1
+		LICENSE = LICENSE
+		nuget.config = nuget.config
+		publish-cli.ps1 = publish-cli.ps1
+		publish-nuget.ps1 = publish-nuget.ps1
+		README.md = README.md
+		test-cli.ps1 = test-cli.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
