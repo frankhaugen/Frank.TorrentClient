@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.TorrentClient.Search"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.TorrentClient.Service", "Frank.TorrentClient.Service\Frank.TorrentClient.Service.csproj", "{2090101B-32B8-4457-9AAE-245E0663A4E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.TorrentClient.Gui2", "Frank.TorrentClient.Gui2\Frank.TorrentClient.Gui2.csproj", "{16F488DC-94CF-44C2-8E83-F6FACDFB1143}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{2090101B-32B8-4457-9AAE-245E0663A4E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2090101B-32B8-4457-9AAE-245E0663A4E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2090101B-32B8-4457-9AAE-245E0663A4E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16F488DC-94CF-44C2-8E83-F6FACDFB1143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16F488DC-94CF-44C2-8E83-F6FACDFB1143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16F488DC-94CF-44C2-8E83-F6FACDFB1143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16F488DC-94CF-44C2-8E83-F6FACDFB1143}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
