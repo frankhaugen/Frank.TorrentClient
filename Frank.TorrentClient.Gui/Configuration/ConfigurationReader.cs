@@ -12,20 +12,4 @@ public static class ConfigurationReader
 
         return configuration;
     }
-
-    public static TorrentDirectories GetTorrentDirectories()
-    {
-        IConfiguration configuration = GetConfiguration();
-        TorrentDirectories torrentDirectories = new TorrentDirectories();
-        configuration.GetSection("TorrentDirectories").Bind(torrentDirectories);
-        return torrentDirectories;
-    }
-    
-    public static TorrentClientSettings GetTorrentClientSettings()
-    {
-        IConfiguration configuration = GetConfiguration();
-        TorrentClientSettings torrentClientSettings = new TorrentClientSettings();
-        configuration.GetSection("TorrentClientSettings").Bind(torrentClientSettings);
-        return torrentClientSettings;
-    }
 }

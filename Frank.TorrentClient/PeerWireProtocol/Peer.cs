@@ -946,22 +946,18 @@ public sealed class Peer : IDisposable
     private void Send()
     {
         var timeout = TimeSpan.FromMilliseconds(250);
-        IEnumerable<PeerMessage> messages;
 
         while (!this.IsDisposed)
         {
-            messages = this.DequeueSendMessages();
-
-            if (messages.Count() > 0)
-                if (this.communicator != null &&
-                    !this.communicator.IsDisposed)
+            IEnumerable<PeerMessage> messages = this.DequeueSendMessages();
+            IEnumerable<PeerMessage> peerMessages = messages as PeerMessage[] ?? messages.ToArray();
+            
+            if (peerMessages.Any())
+                if (this.communicator is { IsDisposed: false })
                 {
-                    foreach (var message in messages) Debug.WriteLine($"{this.Endpoint} -> {message}");
-
-                    // send message
-                    this.communicator.Send(messages);
-
-                    this.UpdateTrafficParameters(0, messages.Sum(x => x.Length));
+                    foreach (var message in peerMessages) Debug.WriteLine($"{this.Endpoint} -> {message}");
+                    this.communicator.Send(peerMessages);
+                    this.UpdateTrafficParameters(0, peerMessages.Sum(x => x.Length));
                 }
 
             this.lastMessageSentTime = DateTime.UtcNow;

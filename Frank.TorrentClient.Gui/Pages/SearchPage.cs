@@ -1,20 +1,19 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Templates;
 
 using Frank.TorrentClient.Gui.UserControls;
-using Frank.TorrentClient.Search;
+using Frank.TorrentClient.Service;
 
 namespace Frank.TorrentClient.Gui.Pages;
 
 public class SearchPage : UserControl
 {
-    private readonly ISearchProvider<TorrentSearchResult> _searchProvider;
+    private readonly ITorrentService _torrentService;
     private SearchControl _searchControl;
 
-    public SearchPage(ISearchProvider<TorrentSearchResult> searchProvider, IDataTemplate dataTemplate)
+    public SearchPage(ITorrentService torrentService)
     {
-        _searchProvider = searchProvider;
-        _searchControl = new SearchControl(_searchProvider, dataTemplate);
+        _torrentService = torrentService;
+        _searchControl = new SearchControl(_torrentService);
         Content = _searchControl;
     }
 }

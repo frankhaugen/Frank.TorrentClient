@@ -1,54 +1,30 @@
 ﻿using Avalonia.Controls;
-
-using DefensiveProgrammingFramework;
-
-using FileWatcherEx;
+using Avalonia.Controls.Templates;
+using Avalonia.Layout;
 
 using Frank.TorrentClient.Gui.UserControls;
+using Frank.TorrentClient.Service;
 
 namespace Frank.TorrentClient.Gui.Pages;
 
 public class DownloadPage : UserControl
 {
-    private readonly IFileSystemWatcherEx _fileSystemWatcherEx;
-    private readonly TorrentDownloads _torrentDownloads;
+    private readonly ITorrentService _torrentService;
 
-    public DownloadPage(IFileSystemWatcherEx fileSystemWatcherEx)
+    public DownloadPage(ITorrentService torrentService)
     {
-        _fileSystemWatcherEx = fileSystemWatcherEx;
-        _torrentDownloads = new TorrentDownloads();
+        _torrentService = torrentService;
         
-        _fileSystemWatcherEx.OnChanged += FileSystemWatcherExOnOnChanged;
-    }
-
-    private void FileSystemWatcherExOnOnChanged(object? sender, FileChangedEvent e)
-    {
-        if (e.ChangeType.IsNotOneOf(ChangeType.CREATED, ChangeType.CHANGED, ChangeType.DELETED))
-            return;
+        Items.VerticalAlignment = VerticalAlignment.Stretch;
+        Items.HorizontalAlignment = HorizontalAlignment.Stretch;        
         
-        var file = new FileInfo(e.FullPath);
-        if (file.Extension != ".torrent")
-            return;
-
-        if (!TorrentInfo.TryLoad(file.FullName, out var torrentInfo))
-            return;
-
-        switch (e.ChangeType)
-        {
-            case ChangeType.CHANGED:
-                break;
-            case ChangeType.CREATED:
-                _torrentDownloads.Add(torrentInfo);
-                break;
-            case ChangeType.DELETED:
-                _torrentDownloads.Remove(torrentInfo);
-                break;
-            case ChangeType.RENAMED:
-                break;
-            case ChangeType.LOG:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        Items.ItemsSource = _torrentService.Torrents;
+        Items.DataContext = _torrentService.Torrents;
+        
+        Items.ItemTemplate = new FuncDataTemplate<TorrentProgressInfo>((x, y) => new TorrentDownloadViewItem(x));
+        
+        Content = Items;
     }
+    
+    public ListBox Items { get; } = new ListBox();
 }

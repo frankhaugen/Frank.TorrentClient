@@ -1,4 +1,6 @@
-﻿using Frank.TorrentClient.Search;
+﻿using DefensiveProgrammingFramework;
+
+using Frank.TorrentClient.Search;
 
 using Microsoft.Extensions.Options;
 
@@ -22,6 +24,7 @@ public class TorrentSearchService : ITorrentSearchService
     
     public TorrentFile SelectResult(TorrentSearchResult torrent)
     {
+        torrent.IsNotNull();
         var file = torrent.Uri.DownloadToLocation(new DirectoryInfo(_options.Value.TorrentsDirectory));
         var torrentFile = new TorrentFile
         {

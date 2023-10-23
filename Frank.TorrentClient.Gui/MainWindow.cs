@@ -1,12 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
-
-using FileWatcherEx;
 
 using Frank.TorrentClient.Gui.Configuration;
 using Frank.TorrentClient.Gui.Pages;
-using Frank.TorrentClient.Search;
+using Frank.TorrentClient.Service;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Frank.TorrentClient.Gui;
 
@@ -15,16 +14,15 @@ public class MainWindow : Window
     public MainWindow()
     {
         // Initialize dependencies
-        var searchProvider = new TorrentSearchProvider();
-        var dataTemplate = new FuncDataTemplate<TorrentSearchResult>((x, y) => new TorrentViewItem(x));
-        var fileSystemWatcherEx = new FileSystemWatcherEx(ConfigurationReader.GetTorrentDirectories().WatchDirectory)
-        {
-            NotifyFilter = NotifyFilters.FileName | NotifyFilters.CreationTime
-        };
+        
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddTorrentService(ConfigurationReader.GetConfiguration());
+        var serviceProvider = serviceCollection.BuildServiceProvider(new ServiceProviderOptions() { ValidateOnBuild = true, ValidateScopes = true });
+        var torrentService = serviceProvider.GetRequiredService<ITorrentService>();
 
         // Initialize tabs
-        TabItem searchTab = new() { Header = "Search", Content = new SearchPage(searchProvider, dataTemplate) };
-        TabItem downloadsTab = new() { Header = "Downloads", Content = new DownloadPage(fileSystemWatcherEx) };
+        TabItem searchTab = new() { Header = "Search", Content = new SearchPage(torrentService) };
+        TabItem downloadsTab = new() { Header = "Downloads", Content = new DownloadPage(torrentService) };
         TabItem aboutTab = new() { Header = "About", Content = new AboutPage() };
         
         // Initialize tab control
@@ -40,19 +38,11 @@ public class MainWindow : Window
     
     protected override void OnInitialized()
     {
-        TempFilesHelper.Initialize();
-
         Title = "Torrent App";
-        Width = 800;
-        Height = 600;
+        Width = 1000;
+        Height = 800;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         base.OnInitialized();
-    }
-
-    protected override void OnClosing(WindowClosingEventArgs e)
-    {
-        TempFilesHelper.Dispose();
-        base.OnClosing(e);
     }
 }

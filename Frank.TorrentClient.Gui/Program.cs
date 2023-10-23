@@ -1,12 +1,5 @@
 ﻿using Avalonia;
 
-using System;
-
-using Avalonia.Markup.Xaml;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace Frank.TorrentClient.Gui;
 
 internal class Program
