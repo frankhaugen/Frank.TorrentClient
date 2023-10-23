@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System.Text;
+
+using Avalonia;
 
 namespace Frank.TorrentClient.Gui;
 
@@ -10,6 +12,7 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }

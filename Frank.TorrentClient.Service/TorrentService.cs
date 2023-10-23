@@ -13,18 +13,9 @@ public class TorrentService : ITorrentService
     {
         _searchService = searchService;
         _downloadService = downloadService;
-        
-        _downloadService.TorrentProgressChanged += (sender, infos) =>
-        {
-            Torrents.Clear();
-            foreach (TorrentProgressInfo progressInfo in infos)
-            {
-                Torrents.Add(progressInfo);
-            }
-        };
     }
     
-    public ObservableCollection<TorrentProgressInfo> Torrents { get; } = new();
+    public ObservableCollection<Torrent> Torrents => _downloadService.ActiveTorrents;
     
     public async Task<IEnumerable<TorrentSearchResult>> SearchAsync(string query)
     {
@@ -36,5 +27,4 @@ public class TorrentService : ITorrentService
         var torrentFile = _searchService.SelectResult(torrent);
         _downloadService.StartDownload(torrentFile);
     }
-
 }

@@ -21,7 +21,7 @@ public class DownloadPage : UserControl
         Items.ItemsSource = _torrentService.Torrents;
         Items.DataContext = _torrentService.Torrents;
         
-        Items.ItemTemplate = new FuncDataTemplate<TorrentProgressInfo>((x, y) => new TorrentDownloadViewItem(x));
+        Items.ItemTemplate = new FuncDataTemplate<Torrent>((x, y) => new TorrentDownloadViewItem(x));
         
         Content = Items;
     }

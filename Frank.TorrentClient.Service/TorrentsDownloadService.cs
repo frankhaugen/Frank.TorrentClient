@@ -1,4 +1,6 @@
-﻿using Frank.TorrentClient.TorrentEventArgs;
+﻿using System.Collections.ObjectModel;
+
+using Frank.TorrentClient.TorrentEventArgs;
 
 using Microsoft.Extensions.Options;
 
@@ -18,15 +20,33 @@ public class TorrentsDownloadService : ITorrentsDownloadService
         _torrentClient.TorrentHashing += TorrentClientOnTorrentHashing;
         _torrentClient.TorrentLeeching += TorrentClientOnTorrentLeeching;
         _torrentClient.TorrentSeeding += TorrentClientOnTorrentSeeding;
+        
+        var torrents = new DirectoryInfo(options.Value.TorrentsDirectory).GetFiles("*.torrent");
+        foreach (var torrent in torrents)
+        {
+            var torrentFile = new TorrentFile
+            {
+                Name = torrent.Name,
+                Source = torrent
+            };
+            
+            StartDownload(torrentFile);
+        }
     }
 
-    public event EventHandler<IEnumerable<TorrentProgressInfo>>? TorrentProgressChanged;
-    
     public void StartDownload(TorrentFile torrentFile)
     {
         var file = torrentFile.Source;
         if (file.Exists && TorrentInfo.TryLoad(file.FullName, out var torrentInfo))
+        {
             _torrentClient.Start(torrentInfo);
+            ActiveTorrents.Add(new Torrent
+            {
+                TorrentFile = torrentFile,
+                TorrentInfo = torrentInfo,
+                TorrentMetadata = TorrentMetadataHelper.GetMetadataFromFile(torrentFile.Source) ?? throw new Exception("Failed to load torrent metadata")
+            });
+        }
         else
             throw new Exception("Failed to load torrent info");
     }
@@ -35,18 +55,29 @@ public class TorrentsDownloadService : ITorrentsDownloadService
     {
         var file = torrentFile.Source;
         if (file.Exists && TorrentInfo.TryLoad(file.FullName, out var torrentInfo))
+        {
             _torrentClient.Stop(torrentInfo.InfoHash);
+            ActiveTorrents.Remove(ActiveTorrents.First(x => x.TorrentFile.Source == torrentFile.Source));
+        }
         else
             throw new Exception("Failed to load torrent info");
     }
+    
+    public ObservableCollection<Torrent> ActiveTorrents { get; } = new();
     
     public IEnumerable<TorrentProgressInfo> GetTorrentProgressInfos() => _torrentClient.GetProgressInfo();
     public TorrentProgressInfo GetTorrentProgressInfo(TorrentFile torrentFile) => GetTorrentProgressInfo(torrentFile.Source);
     
     private void HandleTorrentEvent(TorrentClient client, TorrentInfo torrentInfo)
     {
-        var progressInfo = GetTorrentProgressInfo(torrentInfo);
-        TorrentProgressChanged?.Invoke(this, new[] {progressInfo});    
+        var torrents = new Torrent[ActiveTorrents.Count];
+        ActiveTorrents.CopyTo(torrents, 0);
+        ActiveTorrents.Clear();
+        foreach (var torrent in torrents)
+        {
+            torrent.ProgressInfo = GetTorrentProgressInfo(torrent.TorrentInfo);
+            ActiveTorrents.Add(torrent);
+        }
     }
     
     private void HandleTorrentEvent(object? sender, TorrentInfo torrentInfo)

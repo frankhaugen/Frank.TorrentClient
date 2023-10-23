@@ -2,6 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 
+using Frank.TorrentClient.Service;
+
 namespace Frank.TorrentClient.Gui.UserControls;
 
 public class TorrentDownloadViewItem : UserControl
@@ -18,58 +20,58 @@ public class TorrentDownloadViewItem : UserControl
     
     private readonly StackPanel _stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
     
-    public TorrentDownloadViewItem(TorrentProgressInfo? torrent)
+    public TorrentDownloadViewItem(Torrent torrent)
     {
         if (torrent is null)
             return;
         
         try
         {
-            _progressBar.Value = Convert.ToDouble(torrent.CompletedPercentage);
+            _progressBar.Value = Convert.ToDouble(torrent.ProgressInfo?.CompletedPercentage ?? 0);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var fileName = new TextBlock { Text = Path.GetFileName(torrent.Files.First().FilePath), Margin = _margin };
+            var fileName = new TextBlock { Text = Path.GetFileName(torrent.TorrentMetadata?.Name), Margin = _margin };
             _stackPanel.Children.Add(fileName);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
         
         try
         {
-            var downloadSpeed = new TextBlock { Text = ToMegabitsPerSecond(torrent.DownloadSpeed), Margin = _margin };
+            var downloadSpeed = new TextBlock { Text = ToMegabitsPerSecond(torrent.ProgressInfo?.DownloadSpeed ?? 0), Margin = _margin };
             _stackPanel.Children.Add(downloadSpeed);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var downloadSpeedMb = new TextBlock { Text = ToMegabytesPerSecond(torrent.DownloadSpeed), Margin = _margin };
+            var downloadSpeedMb = new TextBlock { Text = ToMegabytesPerSecond(torrent.ProgressInfo?.DownloadSpeed ?? 0), Margin = _margin };
             _stackPanel.Children.Add(downloadSpeedMb);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var downloadProgress = new TextBlock { Text = torrent.CompletedPercentage.ToString("P"), Margin = _margin };
+            var downloadProgress = new TextBlock { Text = torrent.ProgressInfo?.CompletedPercentage.ToString("P"), Margin = _margin };
             _stackPanel.Children.Add(downloadProgress);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
@@ -78,71 +80,57 @@ public class TorrentDownloadViewItem : UserControl
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var seeders = new TextBlock { Text = $"{torrent.SeederCount} seeders", Margin = _margin };
+            var seeders = new TextBlock { Text = $"{torrent.ProgressInfo?.SeederCount} seeders", Margin = _margin };
             _stackPanel.Children.Add(seeders);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var leechers = new TextBlock { Text = $"{torrent.LeecherCount} leechers", Margin = _margin };
+            var leechers = new TextBlock { Text = $"{torrent.ProgressInfo?.LeecherCount} leechers", Margin = _margin };
             _stackPanel.Children.Add(leechers);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var peers = new TextBlock { Text = $"{torrent.Peers.Count()} peers", Margin = _margin };
-            _stackPanel.Children.Add(peers);
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine(e);
-        }
-
-        try
-        {
-            var totalSize = new TextBlock { Text = $"{torrent.Files.Sum(x =>x.Length) * 1024 * 1024:N2} MB", Margin = _margin };
+            var totalSize = new TextBlock { Text = $"{torrent.TorrentMetadata?.GetFileInfos().Sum(x =>x.FileSize) * 1024 * 1024:N2} MB", Margin = _margin };
             _stackPanel.Children.Add(totalSize);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
 
         try
         {
-            var timeRemaining = new TextBlock { Text = GetTimeRemmaining(torrent), Margin = _margin };
+            var timeRemaining = new TextBlock { Text = GetTimeRemmaining(torrent.ProgressInfo), Margin = _margin };
             _stackPanel.Children.Add(timeRemaining);
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            // Console.Error.WriteLine(e);
         }
         
-        try
-        {
-            Content ??= _stackPanel;
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine(e);
-        }
+        Content ??= _stackPanel;
     }
 
-    private string? GetTimeRemmaining(TorrentProgressInfo torrent)
+    private string? GetTimeRemmaining(TorrentProgressInfo? torrent)
     {
+        if (torrent == null)
+            return "∞";
+        
         var totalBytes = torrent.Files.Sum(x => x.Length);
         var bytesRemaining = totalBytes - torrent.Downloaded;
         var speed = torrent.DownloadSpeed;
@@ -150,7 +138,7 @@ public class TorrentDownloadViewItem : UserControl
         if (speed == 0)
             return "∞";
         
-        var secondsRemaining = bytesRemaining / speed;
+        var secondsRemaining = bytesRemaining / speed * 8;
         var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(secondsRemaining));
         return timeSpan.ToString("c");
     }

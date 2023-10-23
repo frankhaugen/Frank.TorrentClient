@@ -1,8 +1,10 @@
-﻿namespace Frank.TorrentClient.Service;
+﻿using System.Collections.ObjectModel;
+
+namespace Frank.TorrentClient.Service;
 
 public interface ITorrentsDownloadService
 {
-    event EventHandler<IEnumerable<TorrentProgressInfo>>? TorrentProgressChanged;
+    public ObservableCollection<Torrent> ActiveTorrents { get; }
     void StartDownload(TorrentFile torrentFile);
     void StopDownload(TorrentFile torrentFile);
     IEnumerable<TorrentProgressInfo> GetTorrentProgressInfos();
