@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+using CommunityToolkit.Maui;
+
 using Frank.TorrentClient.Service;
 
 using Microsoft.Extensions.Configuration;
@@ -14,7 +16,14 @@ public static class MauiProgram
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         var builder = MauiApp.CreateBuilder();
         builder
+            // .CodeMarkupApp<App>(HotReloadSupport.IdeIPs) 
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit(config =>
+            {
+                config.SetShouldSuppressExceptionsInAnimations(true);
+                config.SetShouldSuppressExceptionsInBehaviors(true);
+                config.SetShouldSuppressExceptionsInConverters(true);
+            })
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

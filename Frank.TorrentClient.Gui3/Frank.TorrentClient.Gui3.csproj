@@ -1,13 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWpf>True</UseWpf>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-Frank.TorrentClient.Gui3-2611D466-0C5D-43E5-9444-A5A79F177348</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="ScreenHelper" Version="1.0.2" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
+        <PackageReference Include="DataGridExtensions" Version="2.5.15" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.TorrentClient.Service\Frank.TorrentClient.Service.csproj" />
+    </ItemGroup>
+    
+    
 </Project>

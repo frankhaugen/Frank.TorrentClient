@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Authors>Frank R. Haugen, Aljaz Simonic</Authors>
         <Description>Torrent client that is simple to use and behave as you expect. This is a fork</Description>
         <Copyright>Frank R. Haugen (Aljaz Simonic, originally)</Copyright>
